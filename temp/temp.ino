@@ -3,15 +3,27 @@
 
 const int tempSensorPin = A0;
 const int prSensorPin = A1;
+const int motorPin = A2;
+const float motorKvValue = 3;   // TODO: Look for datasheet for the specific motor i'm using to find the exact Kv
 
 float temperature;
 float lightIntensity;
+float windSpeed;
 
 void setup() {
   Serial.begin(9600);
 }
 
-float lightIntestityCalculations() {
+float calculateWindSpeed() {
+  float motorValue = analogRead(motorPin);
+
+  float VOUT_MOTOR = motorValue * (VIN / float(1023));  // Convert ADC value to volts
+  float windSpeed = motorKvValue * VOUT_MOTOR;         // Convert from volts to speed (speed = kv of motor * voltage)
+
+  return windSpeed;
+}
+
+float calculateLightIntensity() {
   float prSensorValue = analogRead(prSensorPin);
 
   
@@ -23,7 +35,7 @@ float lightIntestityCalculations() {
 }
 
 
-float tempCalculations() {
+float calculateTemp() {
   float tempSensorValue = analogRead(tempSensorPin);
  
   float VOUT_TEMP = float(tempSensorValue) * VIN / float(1023) ;   // Convert ADC value to volts
@@ -34,11 +46,13 @@ float tempCalculations() {
 }
 
 void loop() {
-   temperature = tempCalculations();
-   lightIntensity = lightIntestityCalculations();
+   temperature = calculateTemp();
+   lightIntensity = calculateLightIntensity();
+   windSpeed = calculateWindSpeed();
 
-  //Serial.println(temperature)
-  Serial.println(lightIntensity);
+  Serial.println("Temp: " + String(temperature) + " F");
+  Serial.println("Light Intensity: " + String(lightIntensity) + " Lumens");
+  Serial.println("Wind Speed: " + String(windSpeed) + " m/s");
 
   delay(1000);
 }
