@@ -79,9 +79,9 @@ void loop() {
   display.clearDisplay();  // Updates Display
 
   // Displays Title
-  display.setTextSize(1.6);
-  display.setCursor(0, 0);
-  display.println("All-in-One Sensor");
+  display.setTextSize(2);
+  display.setCursor(5, 0);
+  display.println("AIO SENSOR");
   
   // Display Temperature
   display.setTextSize(1);
