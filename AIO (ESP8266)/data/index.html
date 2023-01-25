@@ -4,12 +4,25 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.highcharts.com/highcharts.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <style>
+        html {
+            font-family: Arial;
+            display: inline-block;
+            margin: 0px auto;
+            text-align: center;
+        }
+
         body {
             min-width: 310px;
             max-width: 800px;
             height: 400px;
             margin: 0 auto;
+        }
+
+        p {
+            font-size: 3.0rem;
         }
 
         h2 {
@@ -22,13 +35,46 @@
 
 <body>
     <h2>Adi's Room Data</h2>
-    <div id="chart-temperature-celsius" class="container"></div>
-    <div id="chart-temperature-fahrenheit" class="container"></div>
+    <p>
+        <i class="fas fa-thermometer-half" style="color:#7D26CD;"></i>
+        <span id="temperaturec">%TEMPERATUREC%</span>
+        <sup class="units">&deg;C</sup>
+    </p>
+    <p>
+        <i class="fas fa-thermometer-half" style="color:#7D26CD;"></i>
+        <span id="temperaturef">%TEMPERATUREF%</span>
+        <sup class="units">&deg;F</sup>
+    </p>
+    <div id="chart-temperature" class="container"></div>
 </body>
 <script>
-    var chartTC = new Highcharts.Chart({
-        chart: { renderTo: 'chart-temperature-celsius' },
-        title: { text: "Adi's Room Temperature (°C)" },
+    setInterval(function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("temperaturec").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "/temperaturec", true);
+        xhttp.send();
+    }, 1000);
+    setInterval(function () {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("temperaturef").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "/temperaturef", true);
+        xhttp.send();
+    }, 1000);
+
+
+
+
+    var chartT = new Highcharts.Chart({
+        chart: { renderTo: 'chart-temperature' },
+        title: { text: 'Graph thingy please work holy shit' },
         series: [{
             showInLegend: false,
             data: []
@@ -38,14 +84,15 @@
                 animation: false,
                 dataLabels: { enabled: true }
             },
-            series: { color: '#059e8a' }
+            series: { color: '#7D26CD' }
         },
         xAxis: {
             type: 'datetime',
             dateTimeLabelFormats: { second: '%H:%M:%S' }
         },
         yAxis: {
-            title: { text: 'Temperature (°C)' }
+            title: { text: 'Temperature (Fahrenheit)' }
+            //title: { text: 'Temperature (Fahrenheit)' }
         },
         credits: { enabled: false }
     });
@@ -55,55 +102,19 @@
             if (this.readyState == 4 && this.status == 200) {
                 var x = (new Date()).getTime(),
                     y = parseFloat(this.responseText);
-                if (chartTC.series[0].data.length > 40) {
-                    chartTC.series[0].addPoint([x, y], true, true, true);
+                //console.log(this.responseText);
+                if (chartT.series[0].data.length > 40) {
+                    chartT.series[0].addPoint([x, y], true, true, true);
                 } else {
-                    chartTC.series[0].addPoint([x, y], true, false, true);
+                    chartT.series[0].addPoint([x, y], true, false, true);
                 }
             }
         };
-        xhttp.open("GET", "/temperatureInCelsius", true);
+        xhttp.open("GET", "/temperature", true);
         xhttp.send();
-    }, 30000);
-
-    var chartTF = new Highcharts.Chart({
-        chart: { renderTo: 'chart-temperature-fahrenheit' },
-        title: { text: "Adi's Room Temperature (°F)" },
-        series: [{
-            showInLegend: false,
-            data: []
-        }],
-        plotOptions: {
-            line: {
-                animation: false,
-                dataLabels: { enabled: true }
-            }
-        },
-        xAxis: {
-            type: 'datetime',
-            dateTimeLabelFormats: { second: '%H:%M:%S' }
-        },
-        yAxis: {
-            title: { text: 'Temperature (°F)' }
-        },
-        credits: { enabled: false }
-    });
-    setInterval(function () {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState == 4 && this.status == 200) {
-                var x = (new Date()).getTime(),
-                    y = parseFloat(this.responseText);
-                if (chartTF.series[0].data.length > 40) {
-                    chartTF.series[0].addPoint([x, y], true, true, true);
-                } else {
-                    chartCF.series[0].addPoint([x, y], true, false, true);
-                }
-            }
-        };
-        xhttp.open("GET", "/temperatureInFahrenheit", true);
-        xhttp.send();
-    }, 30000);
+    }, 1000);
 </script>
+
+</html>
 
 </html>
