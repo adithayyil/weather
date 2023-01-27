@@ -31,7 +31,8 @@ const char index_html[] PROGMEM = R"rawliteral(
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.highcharts.com/highcharts.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <style>
         html {
             font-family: Arial;
@@ -39,13 +40,17 @@ const char index_html[] PROGMEM = R"rawliteral(
             margin: 0px auto;
             text-align: center;
         }
+
         body {
             min-width: 310px;
             max-width: 800px;
             height: 400px;
             margin: 0 auto;
         }
-        p { font-size: 3.0rem; }
+
+        p {
+            font-size: 3.0rem;
+        }
 
         h2 {
             font-family: Arial;
@@ -96,7 +101,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 
     var chartT = new Highcharts.Chart({
         chart: { renderTo: 'chart-temperature' },
-        title: { text: 'Graph thingy please work holy shit' },
+        title: { text: 'Graph (Degree Fahrenheit)' },
         series: [{
             showInLegend: false,
             data: []
@@ -113,8 +118,7 @@ const char index_html[] PROGMEM = R"rawliteral(
             dateTimeLabelFormats: { second: '%H:%M:%S' }
         },
         yAxis: {
-            title: { text: 'Temperature (Fahrenheit)' }
-            //title: { text: 'Temperature (Fahrenheit)' }
+            title: { text: 'Temperature (Degree Fahrenheit)' }
         },
         credits: { enabled: false }
     });
@@ -138,6 +142,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 </script>
 
 </html>
+
 </html>)rawliteral";
 
 // Network credentials for local network
